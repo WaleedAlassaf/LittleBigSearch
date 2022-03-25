@@ -1,5 +1,6 @@
 import os, math
 import tkinter as tk
+from    tkmacosx import Button
 
 
 class GlobalVars:
@@ -30,37 +31,46 @@ class Utilities:
     @staticmethod
     def makeLabel(textVar, master = 0, backgroundColor = GlobalVars.BGColorDark):
         if master != 0:
-            label = tk.Button(master,
+            label = Button(master,
                             textvariable  = textVar,
                             bd            = 0,
                             bg            = backgroundColor,
                             fg            = "White",
+                            borderwidth   = 0,
+                            borderless    = 1,
+                            highlightthickness = 0,  
                             font          = ('Helvatical bold',10))
+
         else:
-            label = tk.Button(textvariable  = textVar,
+            label = Button(textvariable  = textVar,
                             bd            = 0,
-                            bg            = GlobalVars.BGColorDark,
+                            bg            = backgroundColor,
                             fg            = "White",
+                            borderless    = 1,
+                            highlightthickness = 0,
                             font          = ('Helvatical bold',10))
         return label
     
     @staticmethod
     def makeButton(text, command = 0, buttonColor = GlobalVars.BGColorLight, activeColor = GlobalVars.logoBlue, master = 0):
         if master != 0:
-            btn = tk.Button(master,
-                        text             = text,
+            btn = Button(master,
                         bd               = 0,
                         fg               = "white",
                         cursor           = "hand2",
                         bg               = buttonColor,
+                        borderless       = 1,
+                        highlightbackground= GlobalVars.BGColorDark,
                         activebackground = activeColor)
         else:
-            btn = tk.Button(text             = text,
-                            bd               = 0,
-                            fg               = "white",
-                            cursor           = "hand2",
-                            bg               = buttonColor,
-                            activebackground = activeColor)
+            btn = Button(
+                        bd               = 0,
+                        borderless       = 1,
+                        fg               = "white",
+                        cursor           = "hand2",
+                        highlightbackground= GlobalVars.BGColorDark,
+                        bg               = buttonColor,
+                        activebackground = activeColor)
         if command != 0:
             btn.config(command= lambda: command())
         return btn

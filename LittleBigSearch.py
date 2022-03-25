@@ -1,8 +1,9 @@
 
+from email.mime import image
 import tkinter           as tk
 import os, shutil,threading, ttkthemes, time
 from   genericpath       import exists
-from   tkinter           import Canvas, Frame, Label, TclError, ttk
+from   tkinter           import Canvas, Frame, ttk
 from   tkinter.constants import VERTICAL
 from   functools         import partial
 from   PIL               import Image, ImageTk
@@ -37,7 +38,7 @@ class LittleBigSearchGUI():
         
         self.master = master
         self.master.title("By @SackBiscuit v1.1.3.2")
-        self.master.iconbitmap(default="images/icon.ico")
+
         self.master.configure(bg= helpers.GlobalVars.BGColorDark)
 
         ttkthemes.themed_style.ThemedStyle(theme="adapta")
@@ -56,9 +57,9 @@ class LittleBigSearchGUI():
         tk.Grid.columnconfigure(master, (0,1,2) , weight = 1)
         tk.Grid.rowconfigure(master, 7, weight = 1)
 
-        self.logo = Image.open('images/UI/LB_Search.png')
-        self.logoResize = self.logo.resize(( 500, 122 ))
-        self.logo = ImageTk.PhotoImage(image= self.logoResize)
+        logo = Image.open('images/UI/LB_Search.png')
+        logoResize = logo.resize(( 500, 122 ))
+        self.logo = ImageTk.PhotoImage(image= logoResize)
 
         self.logoLabel = tk.Label(image= self.logo, bg= helpers.GlobalVars.BGColorLight)
         self.logoLabel.image = self.logo
@@ -82,10 +83,10 @@ class LittleBigSearchGUI():
         searchLabel = tk.Label(text  = "The Search will look for level name, creator ID or any keyword in the level Description",
                                bg    = helpers.GlobalVars.BGColorDark,
                                fg    = "White",
-                               font  = ('Helvatical bold',10))
+                               font  = ('Helvatical bold',15))
 
         searchLabel.grid(columnspan=3, column=0, row=2)
-        searchTextField = tk.Entry(bd= 0, font=15, bg="black", fg="white")
+        searchTextField = tk.Entry(bd= 0, font=15, bg="black", fg="white", borderwidth = 0, highlightthickness = 0)
         searchTextField.grid(columnspan=3, row=3, column=0, ipadx= 250)
 
         searchButton = helpers.Utilities.makeButton(text="Search", buttonColor= helpers.GlobalVars.BGColorDark, activeColor= helpers.GlobalVars.BGColorDark)
@@ -96,6 +97,7 @@ class LittleBigSearchGUI():
 
         self.errorText  = tk.StringVar()
         self.errorLabel = helpers.Utilities.makeLabel(self.errorText)
+
         self.errorText.set("")
         self.errorLabel.grid(column=1, row=5, ipadx=30, pady=(0,3))
 
