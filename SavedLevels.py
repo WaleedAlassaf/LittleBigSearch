@@ -6,6 +6,7 @@ from   PIL               import Image, ImageTk
 from   functools         import partial
 from   SFOParser         import LevelParser, ParserReturns
 from   genericpath       import exists
+from helpers.Utilities import GlobalVars as GlobalVars
 import helpers.Utilities as helpers
 
 class SavedLevels():
@@ -37,12 +38,12 @@ class SavedLevels():
         
 
         #____
-        self.removeBtnImage = tk.PhotoImage(file="images/UI/remove.png")
+        self.removeBtnImage = tk.PhotoImage(file=GlobalVars.currentPath+ "/images/UI/remove.png")
 
         self.refreshButton = helpers.Utilities.makeButton(master = self.window, 
                                                           buttonColor= helpers.GlobalVars.BGColorLight,
                                                           activeColor= helpers.GlobalVars.logoBlue)
-        self.refreshBtnImage = tk.PhotoImage(file="images/UI/refresh.png")
+        self.refreshBtnImage = tk.PhotoImage(file=GlobalVars.currentPath+ "/images/UI/refresh.png")
         self.refreshButton.configure(height = 33, width = 125, image= self.refreshBtnImage, 
                                       command = lambda: self.refresh())
         self.refreshButton.grid(column=1, row=0, padx= (180, 0))
@@ -51,7 +52,7 @@ class SavedLevels():
         self.openDestFolder = helpers.Utilities.makeButton(master = self.window, 
                                                             buttonColor= helpers.GlobalVars.BGColorLight,
                                                             activeColor= helpers.GlobalVars.logoBlue)
-        self.openFolderBtnImage = tk.PhotoImage(file="images/UI/openFolder.png")
+        self.openFolderBtnImage = tk.PhotoImage(file=GlobalVars.currentPath+ "/images/UI/openFolder.png")
         self.openDestFolder.configure(height = 33, width = 156, image= self.openFolderBtnImage, 
                                       command = lambda: helpers.Utilities.openFile(self.RPCS3Path))
         self.openDestFolder.grid(column=1, row=0, padx= (0, 110))

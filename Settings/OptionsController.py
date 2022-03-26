@@ -1,7 +1,8 @@
 import json
 import tkinter    as tk
-import helpers.Utilities as helpers
 from   tkinter    import filedialog
+from helpers.Utilities import GlobalVars as GlobalVars
+from helpers.Utilities import Utilities as util
 
 class Options():
     
@@ -17,7 +18,7 @@ class Options():
         self.includeDescriptionDelegate = includeDescriptionDelegate
         #________________________
         
-        self.window = tk.Toplevel(background= helpers.GlobalVars.BGColorLight)
+        self.window = tk.Toplevel(background= GlobalVars.BGColorLight)
         self.window.title("Settings")
         self.window.transient(master)
 
@@ -25,28 +26,28 @@ class Options():
         self.settingsCanvas = tk.Canvas(master= self.window,
                                 height = 20,
                                 width  = 850 ,
-                                bg=helpers.GlobalVars.BGColorLight, 
+                                bg=GlobalVars.BGColorLight, 
                                 borderwidth=0,
                                 highlightthickness=0)
 
         self.settingsCanvas.grid(columnspan=3, row= 4)
 
         self.archiveLabelStr = tk.StringVar()
-        self.archiveLabel = helpers.Utilities.makeLabel(master=self.window, 
+        self.archiveLabel = util.makeLabel(master=self.window, 
                                                        textVar= self.archiveLabelStr,
-                                                       backgroundColor= helpers.GlobalVars.BGColorLight)
+                                                       backgroundColor= GlobalVars.BGColorLight)
 
         self.archiveLabel.configure(cursor           = "hand2",
-                                    activebackground = helpers.GlobalVars.BGColorLight, 
-                                    command          = lambda: helpers.Utilities.openFile(self.archiveLabelStr.get()))
+                                    activebackground = GlobalVars.BGColorLight, 
+                                    command          = lambda: util.openFile(self.archiveLabelStr.get()))
 
         self.archiveLabel.grid(columnspan=1, column=1, row=0, pady=(20, 0), sticky= "we")
 
 
 
-        self.archiveBrowseBtn = helpers.Utilities.makeButton(master = self.window,  
-                                                             buttonColor= helpers.GlobalVars.BGColorLight)
-        self.archiveBrowseBtnImage = tk.PhotoImage(file="images/UI/selectArchive.png")
+        self.archiveBrowseBtn = util.makeButton(master = self.window,  
+                                                             buttonColor= GlobalVars.BGColorLight)
+        self.archiveBrowseBtnImage = tk.PhotoImage(file=GlobalVars.currentPath + "/images/UI/selectArchive.png")
         self.archiveBrowseBtn.configure(height = 33, width = 174, image= self.archiveBrowseBtnImage, 
                                       command = lambda: self.openFileBrowser(self.archiveLabelStr, 
                                                                             title    = "Select LittleBigPlanet level archive", 
@@ -58,15 +59,15 @@ class Options():
         
         self.RPCSLabelStr = tk.StringVar()
 
-        self.RPCSLabel = helpers.Utilities.makeLabel(master= self.window, textVar= self.RPCSLabelStr, backgroundColor= helpers.GlobalVars.BGColorLight)
-        self.RPCSLabel.configure(command = lambda: helpers.Utilities.openFile(self.RPCSLabelStr.get()), cursor= "hand2", activebackground = helpers.GlobalVars.logoBlue)
+        self.RPCSLabel = util.makeLabel(master= self.window, textVar= self.RPCSLabelStr, backgroundColor= GlobalVars.BGColorLight)
+        self.RPCSLabel.configure(command = lambda: util.openFile(self.RPCSLabelStr.get()), cursor= "hand2", activebackground = GlobalVars.logoBlue)
         self.RPCSLabel.grid(columnspan=1, column=1, row=1, sticky= "we", pady=(20, 0))
 
 
 
-        self.RPCSBrowseBtn = helpers.Utilities.makeButton(master = self.window, 
-                                                          buttonColor= helpers.GlobalVars.BGColorLight)
-        self.RPCS3BrowseBtnImage = tk.PhotoImage(file="images/UI/selcetDestination.png")
+        self.RPCSBrowseBtn = util.makeButton(master = self.window, 
+                                                          buttonColor= GlobalVars.BGColorLight)
+        self.RPCS3BrowseBtnImage = tk.PhotoImage(file=GlobalVars.currentPath + "/images/UI/selcetDestination.png")
         self.RPCSBrowseBtn.configure(height = 33, width = 210, image= self.RPCS3BrowseBtnImage, 
                                       command = lambda: self.openFileBrowser(self.RPCSLabelStr, 
                                                                             title="Select destination folder. e.g. RPCS3 savedata",
@@ -80,10 +81,10 @@ class Options():
                                              text              = 'Clear duplicate levels',
                                              onvalue           = 1,
                                              variable          = self.dupStatus,
-                                             background        = helpers.GlobalVars.BGColorDark,
+                                             background        = GlobalVars.BGColorDark,
                                              fg                = "white",
                                              offvalue          = 0,
-                                             activebackground  = helpers.GlobalVars.logoBlue,
+                                             activebackground  = GlobalVars.logoBlue,
                                              selectcolor       = "#000000",
                                              command           = self.toggleDupplicatesCheckBox)
         self.allowDuplicateschkBox.grid(column=0, row=2, pady=20)
@@ -95,25 +96,25 @@ class Options():
                                              text               = 'Include level description when searching (unchecked = more accurate titles)',
                                              onvalue            = 1,
                                              variable           = self.includeDescriptionStatus,
-                                             background         = helpers.GlobalVars.BGColorDark,
+                                             background         = GlobalVars.BGColorDark,
                                              fg                 = "white",
                                              offvalue           = 0,
-                                             activebackground   = helpers.GlobalVars.logoBlue,
+                                             activebackground   = GlobalVars.logoBlue,
                                              selectcolor        = "#000000",
                                              command            = self.toggleIncludeDescription)
         self.onlySearchTitleChkBox.grid(column=1, row=2, pady=20)
         #______
 
-        self.saveSettings = helpers.Utilities.makeButton(master = self.window, 
-                                                        buttonColor= helpers.GlobalVars.BGColorLight,
-                                                        activeColor= helpers.GlobalVars.heartRed,
+        self.saveSettings = util.makeButton(master = self.window, 
+                                                        buttonColor= GlobalVars.BGColorLight,
+                                                        activeColor= GlobalVars.heartRed,
                                                         command    = lambda: self.saveSettingsAsJSON())
-        self.saveBtnImage = tk.PhotoImage(file="images/UI/save.png")
+        self.saveBtnImage = tk.PhotoImage(file=GlobalVars.currentPath + "/images/UI/save.png")
         self.saveSettings.configure(height = 33, width = 125, image= self.saveBtnImage)
         self.saveSettings.grid(column=0, row=3)
 
         self.saveSettingsTxt = tk.StringVar()
-        self.saveSettingsLabel = helpers.Utilities.makeLabel(master= self.window, textVar= self.saveSettingsTxt, backgroundColor= helpers.GlobalVars.BGColorLight)
+        self.saveSettingsLabel = util.makeLabel(master= self.window, textVar= self.saveSettingsTxt, backgroundColor= GlobalVars.BGColorLight)
         self.saveSettingsLabel.configure(fg= "green")
         self.saveSettingsLabel.grid(column=1, row=3, sticky= "we")
         

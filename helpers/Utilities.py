@@ -1,6 +1,5 @@
-from contextlib import redirect_stderr
 import os, math
-import tkinter as tk
+import sys
 import subprocess
 from    tkmacosx import Button
 
@@ -10,6 +9,8 @@ class GlobalVars:
     BGColorLight  = "#2f2f2f"
     logoBlue      = "#2cb4e8"
     heartRed      = "#ff194a"
+
+    currentPath = os.path.sep.join(sys.argv[0].split(os.path.sep)[:-1])
 
 
 class Utilities:

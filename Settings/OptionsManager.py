@@ -32,7 +32,8 @@ class OptionsManager():
         if path.exists("SavedSettings.json"):
             Options.getSettingsFromJSON(self.fetchSettingCallBack)
         else:
-            print("No saved settings.")
+            pass
+            #print("No saved settings.")
 
     # _____________________________________________
     def openSettings(self, master):
