@@ -1,5 +1,7 @@
+from contextlib import redirect_stderr
 import os, math
 import tkinter as tk
+import subprocess
 from    tkmacosx import Button
 
 
@@ -7,6 +9,7 @@ class GlobalVars:
     BGColorDark   = "#1e1e1e"
     BGColorLight  = "#2f2f2f"
     logoBlue      = "#2cb4e8"
+    heartRed      = "#ff194a"
 
 
 class Utilities:
@@ -14,8 +17,7 @@ class Utilities:
     @staticmethod
     def openFile(path):
         try:
-            path = os.path.realpath(path)
-            os.startfile(path)
+            subprocess.call(["open", "-R", path])
         except:
             print("Failed to open folder")
     
@@ -29,49 +31,41 @@ class Utilities:
         return list( (levels[i*k+min(i, m):(i+1)*k+min(i+1, m)] for i in range(x)) )
     
     @staticmethod
-    def makeLabel(textVar, master = 0, backgroundColor = GlobalVars.BGColorDark):
-        if master != 0:
-            label = Button(master,
-                            textvariable  = textVar,
-                            bd            = 0,
-                            bg            = backgroundColor,
-                            fg            = "White",
-                            borderwidth   = 0,
-                            borderless    = 1,
-                            highlightthickness = 0,  
-                            font          = ('Helvatical bold',10))
+    def makeLabel(textVar, master = None, activeColor = None, backgroundColor = GlobalVars.BGColorDark):
+        label = Button()
+        if master != None: label = Button(master= master)
+        if activeColor != None: label.config(activebackground= activeColor)
 
-        else:
-            label = Button(textvariable  = textVar,
-                            bd            = 0,
-                            bg            = backgroundColor,
-                            fg            = "White",
-                            borderless    = 1,
-                            highlightthickness = 0,
-                            font          = ('Helvatical bold',10))
+        label.config(textvariable      = textVar,
+                    bd                 = 0,
+                    borderless         = 1,
+                    highlightthickness = 0,
+                    highlightcolor = GlobalVars.BGColorDark,
+                    focuscolor         = '',
+                    fg                 = "White",
+                    bg            = backgroundColor,
+                    font          = ('Helvatical bold',15))
         return label
     
     @staticmethod
-    def makeButton(text, command = 0, buttonColor = GlobalVars.BGColorLight, activeColor = GlobalVars.logoBlue, master = 0):
-        if master != 0:
-            btn = Button(master,
-                        bd               = 0,
-                        fg               = "white",
-                        cursor           = "hand2",
-                        bg               = buttonColor,
-                        borderless       = 1,
-                        highlightbackground= GlobalVars.BGColorDark,
-                        activebackground = activeColor)
-        else:
-            btn = Button(
-                        bd               = 0,
-                        borderless       = 1,
-                        fg               = "white",
-                        cursor           = "hand2",
-                        highlightbackground= GlobalVars.BGColorDark,
-                        bg               = buttonColor,
-                        activebackground = activeColor)
-        if command != 0:
-            btn.config(command= lambda: command())
-        return btn
+    def makeButton(master     = None, 
+                  text        = None,
+                  command     = None,
+                  buttonColor = GlobalVars.BGColorLight,
+                  activeColor = GlobalVars.logoBlue):
+
+        btn = Button()
+        if master  != None: btn = Button(master= master)
+        if command != None: btn.config(command= lambda: command())
+        if text    != None: btn.config(text = text)
         
+        btn.config( bd                  = 0,
+                    borderless          = 1,
+                    focuscolor          = '',
+                    fg                  = "white",
+                    cursor              = "hand2",
+                    highlightbackground = GlobalVars.BGColorDark,
+                    bg                  = buttonColor,
+                    activebackground    = activeColor)
+        
+        return btn        

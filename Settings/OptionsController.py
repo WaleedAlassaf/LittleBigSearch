@@ -32,21 +32,22 @@ class Options():
         self.settingsCanvas.grid(columnspan=3, row= 4)
 
         self.archiveLabelStr = tk.StringVar()
-        self.archiveLabel = helpers.Utilities.makeLabel(master=self.window, textVar= self.archiveLabelStr, backgroundColor= helpers.GlobalVars.BGColorLight)
+        self.archiveLabel = helpers.Utilities.makeLabel(master=self.window, 
+                                                       textVar= self.archiveLabelStr,
+                                                       backgroundColor= helpers.GlobalVars.BGColorLight)
+
         self.archiveLabel.configure(cursor           = "hand2",
-                                    activebackground = helpers.GlobalVars.logoBlue, 
+                                    activebackground = helpers.GlobalVars.BGColorLight, 
                                     command          = lambda: helpers.Utilities.openFile(self.archiveLabelStr.get()))
 
-        self.archiveLabel.grid(columnspan=1, column=1, row=0, pady=(20, 0))
+        self.archiveLabel.grid(columnspan=1, column=1, row=0, pady=(20, 0), sticky= "we")
 
 
 
-        self.archiveBrowseBtn = helpers.Utilities.makeButton(master = self.window, 
-                                                             text="Browse Archive", 
-                                                             buttonColor= helpers.GlobalVars.BGColorLight,
-                                                             activeColor= helpers.GlobalVars.BGColorLight)
+        self.archiveBrowseBtn = helpers.Utilities.makeButton(master = self.window,  
+                                                             buttonColor= helpers.GlobalVars.BGColorLight)
         self.archiveBrowseBtnImage = tk.PhotoImage(file="images/UI/selectArchive.png")
-        self.archiveBrowseBtn.configure(height = 28, width = 200, image= self.archiveBrowseBtnImage, 
+        self.archiveBrowseBtn.configure(height = 33, width = 174, image= self.archiveBrowseBtnImage, 
                                       command = lambda: self.openFileBrowser(self.archiveLabelStr, 
                                                                             title    = "Select LittleBigPlanet level archive", 
                                                                             delegate = self.archiveDelegate))
@@ -64,11 +65,9 @@ class Options():
 
 
         self.RPCSBrowseBtn = helpers.Utilities.makeButton(master = self.window, 
-                                                          text="Browse Archive", 
-                                                          buttonColor= helpers.GlobalVars.BGColorLight,
-                                                          activeColor= helpers.GlobalVars.BGColorLight)
+                                                          buttonColor= helpers.GlobalVars.BGColorLight)
         self.RPCS3BrowseBtnImage = tk.PhotoImage(file="images/UI/selcetDestination.png")
-        self.RPCSBrowseBtn.configure(height = 28, width = 200, image= self.RPCS3BrowseBtnImage, 
+        self.RPCSBrowseBtn.configure(height = 33, width = 210, image= self.RPCS3BrowseBtnImage, 
                                       command = lambda: self.openFileBrowser(self.RPCSLabelStr, 
                                                                             title="Select destination folder. e.g. RPCS3 savedata",
                                                                             delegate= self.RPCS3Delegate))
@@ -106,18 +105,17 @@ class Options():
         #______
 
         self.saveSettings = helpers.Utilities.makeButton(master = self.window, 
-                                                          text="save", 
-                                                          buttonColor= helpers.GlobalVars.BGColorLight,
-                                                          activeColor= helpers.GlobalVars.BGColorLight)
+                                                        buttonColor= helpers.GlobalVars.BGColorLight,
+                                                        activeColor= helpers.GlobalVars.heartRed,
+                                                        command    = lambda: self.saveSettingsAsJSON())
         self.saveBtnImage = tk.PhotoImage(file="images/UI/save.png")
-        self.saveSettings.configure(height = 28, width = 200, image= self.saveBtnImage, 
-                                      command = lambda: self.saveSettingsAsJSON())
+        self.saveSettings.configure(height = 33, width = 125, image= self.saveBtnImage)
         self.saveSettings.grid(column=0, row=3)
 
         self.saveSettingsTxt = tk.StringVar()
         self.saveSettingsLabel = helpers.Utilities.makeLabel(master= self.window, textVar= self.saveSettingsTxt, backgroundColor= helpers.GlobalVars.BGColorLight)
         self.saveSettingsLabel.configure(fg= "green")
-        self.saveSettingsLabel.grid(column=1, row=3)
+        self.saveSettingsLabel.grid(column=1, row=3, sticky= "we")
         
         #______
         self.setupLabels(levelArchive=currentArchivePath, RPCS3savedata= currentRPCS3Path)

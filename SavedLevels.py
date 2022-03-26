@@ -40,25 +40,21 @@ class SavedLevels():
         self.removeBtnImage = tk.PhotoImage(file="images/UI/remove.png")
 
         self.refreshButton = helpers.Utilities.makeButton(master = self.window, 
-                                                             text="Refresh", 
-                                                             buttonColor= helpers.GlobalVars.BGColorLight,
-                                                             activeColor= helpers.GlobalVars.BGColorLight)
+                                                          buttonColor= helpers.GlobalVars.BGColorLight,
+                                                          activeColor= helpers.GlobalVars.logoBlue)
         self.refreshBtnImage = tk.PhotoImage(file="images/UI/refresh.png")
-        self.refreshButton.configure(height = 28, width = 160, image= self.refreshBtnImage, 
+        self.refreshButton.configure(height = 33, width = 125, image= self.refreshBtnImage, 
                                       command = lambda: self.refresh())
         self.refreshButton.grid(column=1, row=0, padx= (180, 0))
 
 
         self.openDestFolder = helpers.Utilities.makeButton(master = self.window, 
-                                                             text="Refresh", 
-                                                             buttonColor= helpers.GlobalVars.BGColorLight,
-                                                             activeColor= helpers.GlobalVars.BGColorLight)
+                                                            buttonColor= helpers.GlobalVars.BGColorLight,
+                                                            activeColor= helpers.GlobalVars.logoBlue)
         self.openFolderBtnImage = tk.PhotoImage(file="images/UI/openFolder.png")
-        self.openDestFolder.configure(height = 28, width = 160, image= self.openFolderBtnImage, 
+        self.openDestFolder.configure(height = 33, width = 156, image= self.openFolderBtnImage, 
                                       command = lambda: helpers.Utilities.openFile(self.RPCS3Path))
         self.openDestFolder.grid(column=1, row=0, padx= (0, 110))
-
-
 
 
 
@@ -183,15 +179,14 @@ class SavedLevels():
             levelImage_resize.grid(row = index, column=0)
             
             levelInfoButton = helpers.Utilities.makeButton(master= scrollFrame2, text= labelText + "\n" + levelPath, command= partial(helpers.Utilities.openFile, level.path))
-            levelInfoButton.configure(bg= helpers.GlobalVars.BGColorDark, width= 92)
+            levelInfoButton.configure(bg= helpers.GlobalVars.BGColorDark, width= 620)
             levelInfoButton.grid(row = index, column=1 , padx= 20, pady=(0, 20))
             
             removeLevelButton = helpers.Utilities.makeButton(master = scrollFrame2, 
-                                                             text="remove", 
                                                              buttonColor= helpers.GlobalVars.BGColorDark,
-                                                             activeColor= helpers.GlobalVars.BGColorDark)
+                                                             activeColor= helpers.GlobalVars.heartRed)
             
-            removeLevelButton.configure(height = 28, width = 120, image= self.removeBtnImage, 
+            removeLevelButton.configure(height = 33, width = 125, image= self.removeBtnImage, 
                                         command = partial(self.removeFolder, level.path))
             removeLevelButton.grid(row = index, column=1, pady=(50, 0))
 

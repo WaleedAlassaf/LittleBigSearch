@@ -1,7 +1,9 @@
 
+from ast import Global
 from email.mime import image
 import tkinter           as tk
 import os, shutil,threading, ttkthemes, time
+from turtle import width
 from   genericpath       import exists
 from   tkinter           import Canvas, Frame, ttk
 from   tkinter.constants import VERTICAL
@@ -67,18 +69,19 @@ class LittleBigSearchGUI():
         
         # ____ 
         
-        self.settingsButton = helpers.Utilities.makeButton(text="Settings", buttonColor= helpers.GlobalVars.BGColorDark, activeColor= helpers.GlobalVars.BGColorDark)
+        self.settingsButton = helpers.Utilities.makeButton(buttonColor = helpers.GlobalVars.BGColorDark, 
+                                                          command      = self.openSettings)
         self.settingsBtnImage = tk.PhotoImage(file="images/UI/settings.png")
-        self.settingsButton.configure(height = 28, width = 120, image= self.settingsBtnImage, command = self.openSettings)
+        self.settingsButton.config(height = 33, width = 127, image= self.settingsBtnImage)
         self.settingsButton.grid(columnspan=3, column=0, row=1, pady=10, padx= (0,130))
         
         # ____
 
 
-        self.SavedLevelsButton = helpers.Utilities.makeButton(text = "Saved Levels", buttonColor= helpers.GlobalVars.BGColorDark, activeColor= helpers.GlobalVars.BGColorDark)
-        self.savedLevelsBtnImage = tk.PhotoImage(file="images/UI/hearted.png")
-        self.SavedLevelsButton.configure(height = 28, width = 120, image= self.savedLevelsBtnImage, command = self.openSavedLevels)
-        self.SavedLevelsButton.grid(columnspan=3, column=0, row=1, pady=10, padx= (130,0))
+        self.heartedButton = helpers.Utilities.makeButton(buttonColor= helpers.GlobalVars.BGColorDark, activeColor= helpers.GlobalVars.heartRed)
+        self.heartedButtonImage = tk.PhotoImage(file="images/UI/hearted.png")
+        self.heartedButton.configure(height = 33, width = 127, image= self.heartedButtonImage, command = self.openSavedLevels)
+        self.heartedButton.grid(columnspan=3, column=0, row=1, pady=10, padx= (130,0))
         # ____ 
         searchLabel = tk.Label(text  = "The Search will look for level name, creator ID or any keyword in the level Description",
                                bg    = helpers.GlobalVars.BGColorDark,
@@ -89,15 +92,16 @@ class LittleBigSearchGUI():
         searchTextField = tk.Entry(bd= 0, font=15, bg="black", fg="white", borderwidth = 0, highlightthickness = 0)
         searchTextField.grid(columnspan=3, row=3, column=0, ipadx= 250)
 
-        searchButton = helpers.Utilities.makeButton(text="Search", buttonColor= helpers.GlobalVars.BGColorDark, activeColor= helpers.GlobalVars.BGColorDark)
+        searchButton = helpers.Utilities.makeButton(buttonColor= helpers.GlobalVars.BGColorDark, 
+                                                   command = lambda: threading.Thread(target= self.LBSsearch, args= (searchTextField.get(), self.options.archivePath)).start())
+
         self.searchBtnImage = tk.PhotoImage(file="images/UI/search.png")
-        searchButton.configure(height = 28, width = 120, image= self.searchBtnImage, 
-                               command = lambda: threading.Thread(target= self.LBSsearch, args= (searchTextField.get(), self.options.archivePath)).start())
+        searchButton.configure(height = 33, width = 127, image= self.searchBtnImage)
         searchButton.grid(column=1, row=4, pady=(13,13))
 
         self.errorText  = tk.StringVar()
-        self.errorLabel = helpers.Utilities.makeLabel(self.errorText)
-
+        self.errorLabel = helpers.Utilities.makeLabel(textVar = self.errorText, activeColor= helpers.GlobalVars.BGColorDark)
+        self.errorLabel.configure(width = 350)
         self.errorText.set("")
         self.errorLabel.grid(column=1, row=5, ipadx=30, pady=(0,3))
 
@@ -137,6 +141,7 @@ class LittleBigSearchGUI():
     def animate(self, frameNumber):
         if self.isSearching == False:
             self.earthGif.config(image="")# remove the image
+
             return
 
         if frameNumber == 32: # Loops the animation when it hits the last frame.
@@ -169,7 +174,7 @@ class LittleBigSearchGUI():
         self.currentPage = 0
         self.isSearching = True
         self.animate(0)
-        
+
         # this event will be called from background thread to use the main thread.
         self.master.bind("<<event1>>", self.updatePage)
         self.levelParser.search(self.searchCallBack, path, term, includeDescription= self.options.includeDescription)
@@ -242,6 +247,7 @@ class LittleBigSearchGUI():
         self.master.update()
         self.scrollerCanvas.yview_scroll(-1 * int((event.delta / 120)), "units")
 
+
     def sendError(self, message = "", color = "white"):
         self.errorLabel.configure(fg=color)
         self.errorText.set(message)        
@@ -292,15 +298,21 @@ class LittleBigSearchGUI():
         self.showResult(isAfterSearch= False)
     
     def showPagingButtons(self):
-        self.pageLeft.grid(column=1, row=6, ipadx=15, pady=(0, 10), padx= (0, 150))
-        self.pageFarLeft.grid(column=1, row=6, ipadx=10, pady=(0, 10), padx= (0, 250))
-        
-        self.pageRight.grid(column=1, row=6, ipadx=15, pady=(0, 10), padx= (150, 0))
-        self.pageFarRight.grid(column=1, row=6, ipadx=10, pady=(0, 10), padx= (250, 0))
+        self.pageFarLeft.configure(width = 40)
+        self.pageLeft.configure(width = 40)
+        self.pageFarRight.configure(width = 40)
+        self.pageRight.configure(width = 40)
 
-        self.levelCounter.grid(column=1, row=6, ipadx=10, pady=(0, 10), padx= (400, 0))
+        self.pageLeft.grid(column=1, row=6, ipadx=10, pady=(0, 10), padx= (0, 230))
+        self.pageFarLeft.grid(column=1, row=6, ipadx=15, pady=(0, 10), padx= (0, 360))
+        
+        self.pageRight.grid(column=1, row=6, ipadx=10, pady=(0, 10), padx= (230, 0))
+        self.pageFarRight.grid(column=1, row=6, ipadx=15, pady=(0, 10), padx= (360, 0))
+
+        self.levelCounter.grid(column=1, row=6, ipadx=10, pady=(0, 10), padx= (600, 0))
         self.pageNumbers.grid(column=1, row=6, ipadx=20, pady=(0, 10))
         
+
    # builds result scroller view _______________________________________________________________________________________________________________________________
    
     def showResult(self, isAfterSearch: bool= True):
@@ -320,11 +332,16 @@ class LittleBigSearchGUI():
         mainFrame.grid(columnspan=3, sticky="nsew")
         
         
-        self.scrollerCanvas = tk.Canvas(mainFrame,bg=helpers.GlobalVars.BGColorDark, borderwidth=0, highlightthickness=0, height=600, width=880)
+        self.scrollerCanvas = tk.Canvas(mainFrame,
+                                        bg=helpers.GlobalVars.BGColorDark,
+                                        borderwidth=0,
+                                        highlightthickness=0, 
+                                        height=600, width=880)
+                                        
         self.scrollerCanvas.grid(row=0, column=0, sticky= "ns")
 
 
-        ScrollBar = ttk.Scrollbar(mainFrame, orient=VERTICAL, command=self.scrollerCanvas.yview)
+        ScrollBar = ttk.Scrollbar(mainFrame ,orient=VERTICAL, command=self.scrollerCanvas.yview)
         ScrollBar.grid(row=0, column=3, sticky='ns')
         
 
@@ -365,9 +382,9 @@ class LittleBigSearchGUI():
             levelImage_resize.grid(row = index, column=0, padx= (30,0))
             
             levelInfoButton = helpers.Utilities.makeButton(master= scrollerFrame, text= labelText + "\n" + levelPath, command= partial(self.moveFolder, level.path))
-            levelInfoButton.configure(bg= helpers.GlobalVars.BGColorDark, width= 84)
+            levelInfoButton.configure(bg= helpers.GlobalVars.BGColorDark, width = 620)
             
-            levelInfoButton.grid(row = index, column=1, columnspan= 2, sticky="ew")
+            levelInfoButton.grid(row = index, column=1, columnspan= 2)
         
         # reset to page one after searching
         if isAfterSearch:
