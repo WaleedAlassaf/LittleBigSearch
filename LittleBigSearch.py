@@ -88,8 +88,8 @@ class LittleBigSearchGUI():
                                font  = ('Helvatical bold',15))
 
         searchLabel.grid(columnspan=3, column=0, row=2)
-        searchTextField = tk.Entry(bd= 0, font=15, bg="black", fg="white", borderwidth = 0, highlightthickness = 0)
-        searchTextField.grid(columnspan=3, row=3, column=0, ipadx= 250)
+        searchTextField = tk.Entry(bd= 0, font=30, bg="black", fg="white", borderwidth = 0, highlightthickness = 0)
+        searchTextField.grid(columnspan=3, row=3, column=0, ipadx= 250, ipady= 3)
 
         searchButton = util.makeButton(buttonColor= GlobalVars.BGColorDark, 
                                                    command = lambda: threading.Thread(target= self.LBSsearch, args= (searchTextField.get(), self.options.archivePath)).start())
@@ -129,7 +129,7 @@ class LittleBigSearchGUI():
     def configureGif(self):
         for i in range(32): #theres 32 frame to the globe animation.
             try:
-                frame = Image.open(f'images/animation/earth{i + 1}.png')
+                frame = Image.open(f'{GlobalVars.currentPath}/images/animation/earth{i + 1}.png')
                 frameResized = frame.resize(( 45, 45 ))
                 frame = ImageTk.PhotoImage(image= frameResized)
                 self.framelist.append(frame)
